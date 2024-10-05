@@ -1,0 +1,5 @@
+name: BeaconBattle
+version: '${project.version}'
+main: net.kevarion.beaconbattle.BeaconBattle
+api-version: '1.21'
+description: The official Beacon Battle gamemode for Kerivax Network
