@@ -1,5 +1,7 @@
 package net.kevarion.beaconbattle.game.state;
 
+import org.bukkit.Bukkit;
+
 public class GameStateManager {
 
     private GameState currentState;
@@ -42,7 +44,18 @@ public class GameStateManager {
      */
     private void onStateChange(GameState newState) {
         switch (newState) {
-
+            case PREGAME:
+                System.out.println("Pregame");
+            case STARTING:
+                System.out.println("Starting");
+            case ACTIVE:
+                System.out.println("Active");
+            case ENDING:
+                System.out.println("Ending");
+            case RESETTING:
+                System.out.println("Resetting");
+            default:
+                break;
         }
     }
 

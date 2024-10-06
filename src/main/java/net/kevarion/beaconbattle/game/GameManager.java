@@ -2,101 +2,78 @@ package net.kevarion.beaconbattle.game;
 
 import net.kevarion.beaconbattle.game.state.GameState;
 import net.kevarion.beaconbattle.game.state.GameStateManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.kevarion.beaconbattle.arena.Arena;
+import net.kevarion.beaconbattle.manager.PlayerManager;
+import net.kevarion.beaconbattle.team.TeamManager;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class GameManager {
 
-    private final GameStateManager gameStateManager;
-    private final Set<Player> players;
+    private GameStateManager gameStateManager;
+    private Arena arena;
+    private TeamManager teamManager;
+    private PlayerManager playerManager;
+    private Game game;
 
-    public GameManager() {
+    public GameManager(Arena arena) {
+        this.arena = arena;
         this.gameStateManager = new GameStateManager();
-        this.players = new HashSet<>();
+        List<Location> spawnLocations = new ArrayList<>();
+        this.teamManager = new TeamManager(spawnLocations);
+        this.playerManager = new PlayerManager();
+        this.game = new Game(this, arena); // Initialize Game here
     }
 
-    /**
-     * STarts the game by setting the game state to STARTING
-     */
+    public void initializeGame() {
+        game.initializeGame(); // Call the Game's initialization
+    }
+
     public void startGame() {
-        if (gameStateManager.isPregame()) {
-            gameStateManager.setGameState(GameState.STARTING);
-        }
-        //TODO: Implement countdown timer
+        game.startGame(); // Start the game through the Game class
     }
 
-    /**
-     * Begins the active game phase.
-     */
-    private void beginGame() {
-        gameStateManager.setGameState(GameState.ACTIVE);
-        for (Player player : players) {
-            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "[!] " + ChatColor.GREEN + "The game has begun!");
-            //TODO: Teleport players to the spawn points and arenas.
-        }
+    public void endGame() {
+        game.endGame(); // End the game through the Game class
     }
 
-    /**
-     * Stops the game and announces the winner.
-     */
-    public void stopGame() {
-        gameStateManager.setGameState(GameState.ENDING);
+    public void onBeaconDestroyed(String teamColor) {
+        // Logic for beacon destruction
     }
 
-    /**
-     * Announce the winner of the game.
-     */
-    private void announceWinner() {
-        // TODO: Make win system
-        Bukkit.broadcastMessage("The game has ended!");
+    public void onPlayerDeath(Player player) {
+        // Logic for handling player death
     }
 
-    /**
-     * Resets the game for the next round.
-     */
-    private void resetGame() {
-        gameStateManager.setGameState(GameState.RESETTING);
-        //TODO: Reset Arena, teleport players to lobby, open arena back up for use.
-        for (Player player : players) {
-            // Teleport players back to the lobby or reset their locations
-        }
-        gameStateManager.setGameState(GameState.PREGAME);
+    public void checkWinCondition() {
+        // Logic for checking win condition
     }
 
-    /**
-     * Adds a player to the game.
-     * @param player The player to add.
-     */
-    public void addPlayer(Player player) {
-        if (!players.contains(player)) {
-            players.add(player);
-            player.sendMessage("You have joined the game!");
-            // Add additional things for when a player joins
-        }
+    public void resetGame() {
+        game.resetGame(); // Reset the game through the Game class
     }
 
-    /**
-     * Removes a player from the game.
-     * @param player The player to remove.
-     */
-    public void removePlayer(Player player) {
-        if (players.contains(player)) {
-            players.remove(player);
-            player.sendMessage("You have left the game!");
-            // Add additional logic for when a player leaves
-        }
+    public GameStateManager getGameStateManager() {
+        return gameStateManager;
     }
 
-    /**
-     * Get the current list of players in the game.
-     * @return Set of players.
-     */
+    public Arena getArena() {
+        return arena;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
     public Set<Player> getPlayers() {
-        return players;
+        return playerManager.getPlayers(); // Assuming PlayerManager has a getPlayers method
     }
-
 }
