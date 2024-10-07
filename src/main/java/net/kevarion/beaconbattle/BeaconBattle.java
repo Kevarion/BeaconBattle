@@ -1,15 +1,22 @@
 package net.kevarion.beaconbattle;
 
 import co.aikar.commands.PaperCommandManager;
-import jdk.tools.jmod.Main;
 import lombok.Getter;
+import net.kevarion.beaconbattle.arena.Arena;
 import net.kevarion.beaconbattle.arena.ArenaManager;
 import net.kevarion.beaconbattle.command.MainCommand;
+import net.kevarion.beaconbattle.event.BlockListener;
+import net.kevarion.beaconbattle.event.JoinQuitListener;
+import net.kevarion.beaconbattle.game.GameManager;
+import net.kevarion.beaconbattle.game.countdown.CountdownManager;
+import net.kevarion.beaconbattle.scoreboard.SBManager;
 import net.kevarion.beaconbattle.stat.StatManager;
 import net.kevarion.beaconbattle.storage.ArenaStorage;
 import net.kevarion.beaconbattle.storage.StatsStorage;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 public final class BeaconBattle extends JavaPlugin {
@@ -20,6 +27,10 @@ public final class BeaconBattle extends JavaPlugin {
 
     private ArenaManager arenaManager;
     private StatManager statManager;
+
+    private GameManager gameManager;
+    private CountdownManager countdownManager;
+    private SBManager sbManager;
 
     public static BeaconBattle getInstance() {
         return instance;
@@ -61,12 +72,19 @@ public final class BeaconBattle extends JavaPlugin {
 
     private void registerEvents() {
         PluginManager pm = getServer().getPluginManager();
+
+        pm.registerEvents(new JoinQuitListener(sbManager), this);
+        pm.registerEvents(new BlockListener(), this);
+
     }
 
     private void registerManagers() {
 
-        this.arenaManager = new ArenaManager();
+        this.arenaManager = new ArenaManager(new File(getDataFolder(), "arenas.yml"));
         this.statManager = new StatManager();
+
+        this.gameManager = new GameManager(this, new Arena("default_arena_name"));
+        this.countdownManager = new CountdownManager(gameManager);
 
     }
 

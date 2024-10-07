@@ -1,9 +1,13 @@
 package net.kevarion.beaconbattle.game;
 
+import net.kevarion.beaconbattle.BeaconBattle;
 import net.kevarion.beaconbattle.arena.Arena;
+import net.kevarion.beaconbattle.game.state.GameState;
 import net.kevarion.beaconbattle.game.state.GameStateManager;
 import net.kevarion.beaconbattle.manager.PlayerManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,9 +36,38 @@ public class Game {
 
     public void startGame() {
         if (gameManager.getGameStateManager().isPregame()) {
-            gameManager.startGame();
-            System.out.println("Started.");
+            startCountdown();
+            System.out.println("Started countdown.");
         }
+    }
+
+    private void startCountdown() {
+        new BukkitRunnable() {
+            int countdown = 10;
+
+            @Override
+            public void run() {
+                if (countdown > 0) {
+                    for (Player player : players) {
+                        player.sendTitle("§c" + countdown, "", 10, 20, 10);
+                    }
+
+                    if (countdown <= 5) {
+                        String message = "§a" + countdown;
+                        for (Player player : players) {
+                            player.sendMessage(message);
+                        }
+                    }
+
+                    countdown--;
+                } else {
+                    // Countdown finished, start the game
+                    this.cancel();
+                    gameManager.getGameStateManager().setGameState(GameState.ACTIVE);
+                    System.out.println("Game has started.");
+                }
+            }
+        }.runTaskTimer(BeaconBattle.getInstance(), 0, 20); // Schedule task to run every second
     }
 
     public void endGame() {
@@ -66,4 +99,5 @@ public class Game {
     public Arena getArena() {
         return arena;
     }
+
 }
