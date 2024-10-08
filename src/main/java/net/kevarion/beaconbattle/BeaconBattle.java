@@ -13,6 +13,7 @@ import net.kevarion.beaconbattle.scoreboard.SBManager;
 import net.kevarion.beaconbattle.stat.StatManager;
 import net.kevarion.beaconbattle.stat.StatTracker;
 import net.kevarion.beaconbattle.storage.ArenaStorage;
+import net.kevarion.beaconbattle.storage.DataStorage;
 import net.kevarion.beaconbattle.storage.StatsStorage;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +36,8 @@ public final class BeaconBattle extends JavaPlugin {
 
     @Getter
     private StatsStorage statsStorage;
+    private ArenaStorage arenaStorage;
+    private DataStorage dataStorage;
 
     public static BeaconBattle getInstance() {
         return instance;
@@ -65,6 +68,9 @@ public final class BeaconBattle extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().severe("Disabled.");
+        statsStorage.saveStatsConfig();
+        arenaStorage.saveArenaConfig();
+        dataStorage.saveDataConfig();
     }
 
     private void registerCommands() {
