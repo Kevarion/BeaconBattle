@@ -49,7 +49,7 @@ public class SpectatorManager {
     }
 
     private void addSpectatorItems(Player player) {
-        player.getInventory().clear(); /
+        player.getInventory().clear();
 
         ItemStack compass = createCompass();
         player.getInventory().addItem(compass);
