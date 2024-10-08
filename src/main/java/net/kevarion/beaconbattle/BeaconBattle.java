@@ -11,6 +11,7 @@ import net.kevarion.beaconbattle.game.GameManager;
 import net.kevarion.beaconbattle.game.countdown.CountdownManager;
 import net.kevarion.beaconbattle.scoreboard.SBManager;
 import net.kevarion.beaconbattle.stat.StatManager;
+import net.kevarion.beaconbattle.stat.StatTracker;
 import net.kevarion.beaconbattle.storage.ArenaStorage;
 import net.kevarion.beaconbattle.storage.StatsStorage;
 import org.bukkit.plugin.PluginManager;
@@ -32,6 +33,9 @@ public final class BeaconBattle extends JavaPlugin {
     private CountdownManager countdownManager;
     private SBManager sbManager;
 
+    @Getter
+    private StatsStorage statsStorage;
+
     public static BeaconBattle getInstance() {
         return instance;
     }
@@ -44,7 +48,7 @@ public final class BeaconBattle extends JavaPlugin {
     public void onEnable() {
 
         ArenaStorage arenaStorage = new ArenaStorage(this);
-        StatsStorage statsStorage = new StatsStorage(this);
+        statsStorage = new StatsStorage(this);
 
         instance = this;
         getLogger().info("Enabled.");
@@ -76,12 +80,14 @@ public final class BeaconBattle extends JavaPlugin {
         pm.registerEvents(new JoinQuitListener(sbManager), this);
         pm.registerEvents(new BlockListener(), this);
 
+        pm.registerEvents(new StatTracker(statManager), this);
+
     }
 
     private void registerManagers() {
 
         this.arenaManager = new ArenaManager(new File(getDataFolder(), "arenas.yml"));
-        this.statManager = new StatManager();
+        this.statManager = new StatManager(statsStorage);
 
         this.gameManager = new GameManager(this, new Arena("default_arena_name"));
         this.countdownManager = new CountdownManager(gameManager);
