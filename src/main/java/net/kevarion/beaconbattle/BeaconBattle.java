@@ -50,8 +50,9 @@ public final class BeaconBattle extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        ArenaStorage arenaStorage = new ArenaStorage(this);
+        arenaStorage = new ArenaStorage(this);
         statsStorage = new StatsStorage(this);
+        dataStorage = new DataStorage(this);
 
         instance = this;
         getLogger().info("Enabled.");
