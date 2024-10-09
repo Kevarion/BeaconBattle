@@ -28,7 +28,7 @@ public class ArenaManager {
 
     public static ArenaManager getInstance() {
         if (instance == null) {
-            instance = new ArenaManager(new File(Bukkit.getServer().getPluginManager().getPlugin("YourPluginName").getDataFolder(), "arenas.yml"));
+            instance = new ArenaManager(new File(Bukkit.getServer().getPluginManager().getPlugin("BeaconBattle").getDataFolder(), "arenas.yml"));
         }
         return instance;
     }

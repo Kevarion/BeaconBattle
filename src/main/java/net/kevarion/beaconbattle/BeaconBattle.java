@@ -9,14 +9,13 @@ import net.kevarion.beaconbattle.event.BlockListener;
 import net.kevarion.beaconbattle.event.JoinQuitListener;
 import net.kevarion.beaconbattle.game.GameManager;
 import net.kevarion.beaconbattle.game.countdown.CountdownManager;
+import net.kevarion.beaconbattle.inventory.InventoryManager;
 import net.kevarion.beaconbattle.scoreboard.SBManager;
 import net.kevarion.beaconbattle.stat.StatManager;
 import net.kevarion.beaconbattle.stat.StatTracker;
 import net.kevarion.beaconbattle.storage.ArenaStorage;
 import net.kevarion.beaconbattle.storage.DataStorage;
 import net.kevarion.beaconbattle.storage.StatsStorage;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -90,6 +89,7 @@ public final class BeaconBattle extends JavaPlugin {
         pm.registerEvents(new BlockListener(), this);
 
         pm.registerEvents(new StatTracker(statManager), this);
+        pm.registerEvents(new InventoryManager(), this);
 
     }
 
