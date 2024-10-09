@@ -1,7 +1,6 @@
 package net.kevarion.beaconbattle.game;
 
 import net.kevarion.beaconbattle.BeaconBattle;
-import net.kevarion.beaconbattle.game.beacon.Beacon;
 import net.kevarion.beaconbattle.game.state.GameState;
 import net.kevarion.beaconbattle.game.state.GameStateManager;
 import net.kevarion.beaconbattle.arena.Arena;
