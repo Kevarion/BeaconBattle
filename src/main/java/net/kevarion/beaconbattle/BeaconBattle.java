@@ -15,6 +15,7 @@ import net.kevarion.beaconbattle.stat.StatManager;
 import net.kevarion.beaconbattle.stat.StatTracker;
 import net.kevarion.beaconbattle.storage.ArenaStorage;
 import net.kevarion.beaconbattle.storage.DataStorage;
+import net.kevarion.beaconbattle.storage.LevelStorage;
 import net.kevarion.beaconbattle.storage.StatsStorage;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,6 +40,7 @@ public final class BeaconBattle extends JavaPlugin {
     private StatsStorage statsStorage;
     private ArenaStorage arenaStorage;
     private DataStorage dataStorage;
+    private LevelStorage levelStorage;
 
     public static BeaconBattle getInstance() {
         return instance;
@@ -54,6 +56,7 @@ public final class BeaconBattle extends JavaPlugin {
         arenaStorage = new ArenaStorage(this);
         statsStorage = new StatsStorage(this);
         dataStorage = new DataStorage(this);
+        levelStorage = new LevelStorage(this);
 
         instance = this;
         getLogger().info("Enabled.");
@@ -73,6 +76,7 @@ public final class BeaconBattle extends JavaPlugin {
         statsStorage.saveStatsConfig();
         arenaStorage.saveArenaConfig();
         dataStorage.saveDataConfig();
+        levelStorage.saveLevelsConfig();
     }
 
     private void registerCommands() {
