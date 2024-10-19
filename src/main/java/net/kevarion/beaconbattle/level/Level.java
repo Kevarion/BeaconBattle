@@ -25,8 +25,16 @@ public class Level {
         return level;
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public int getPrestige() {
         return prestige;
+    }
+
+    public void setPrestige(int prestige) {
+        this.prestige = prestige;
     }
 
     public int getXP() {
@@ -35,6 +43,14 @@ public class Level {
 
     public int getXpToNextLevel() {
         return xpToNextLevel;
+    }
+
+    public void setXP(int xp) {
+        this.xp = xp;
+    }
+
+    public void setXPToNextLevel(int xpToNextLevel) {
+        this.xpToNextLevel = xpToNextLevel;
     }
 
     public void addXP(int amount) {
